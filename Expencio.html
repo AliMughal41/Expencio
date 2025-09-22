@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
+
+    <div class="container">
+        <div class="header">
+            <h1>💰 Expense Tracker</h1>
+            <nav class="nav-tabs">
+                <button class="tab-btn active" onclick="showTab('home')">🏠 Home</button>
+                <button class="tab-btn" onclick="showTab('add')">➕ Add Expense</button>
+                <button class="tab-btn" onclick="showTab('history')">📋 History</button>
+                <button class="tab-btn" onclick="showTab('charts')">📊 Charts</button>
+                <button class="tab-btn" onclick="showTab('reports')">📈 Reports</button>
+            </nav>
+        </div>
+
+        <!-- Home Tab -->
+        <div id="home" class="tab-content active">
+            <div class="home-content">
+                <h2>Welcome to Your Personal Expense Tracker</h2>
+                <p>Take control of your finances with our comprehensive expense tracking solution. Monitor your
+                    spending, analyze patterns, and make informed financial decisions.</p>
+
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">💳</div>
+                        <h3>Easy Expense Entry</h3>
+                        <p>Quickly add expenses with amount, description, and category. Smart date handling with default
+                            to today.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📊</div>
+                        <h3>Visual Analytics</h3>
+                        <p>Interactive pie and bar charts show spending patterns by category and time periods.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔍</div>
+                        <h3>Smart Filtering</h3>
+                        <p>Search and filter expenses by category, date range, or keywords to find exactly what you
+                            need.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">💾</div>
+                        <h3>Data Persistence</h3>
+                        <p>All your data is safely stored locally and persists between sessions. Export to CSV or JSON
+                            anytime.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🎨</div>
+                        <h3>Customizable Interface</h3>
+                        <p>Switch between dark and light themes for comfortable viewing in any environment.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📱</div>
+                        <h3>Responsive Design</h3>
+                        <p>Works perfectly on desktop, tablet, and mobile devices with touch-friendly interfaces.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+</body>
+
+</html>
