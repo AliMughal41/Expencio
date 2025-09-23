@@ -292,6 +292,57 @@
                 <button class="btn" onclick="addExpense()">Add Expense</button>
             </div>
 
+             <!-- Quick Stats -->
+            <div class="stats-grid" id="quickStats">
+                <!-- Stats will be populated by JavaScript -->
+            </div>
+        </div>
+
+        <!-- History Tab -->
+        <div id="history" class="tab-content">
+            <div class="filters">
+                <h3>Filters & Search</h3>
+                <div class="filter-row">
+                    <div class="form-group">
+                        <label for="filterCategory">Filter by Category</label>
+                        <select id="filterCategory" onchange="filterExpenses()">
+                            <option value="">All Categories</option>
+                            <option value="Food">🍕 Food</option>
+                            <option value="Transport">🚗 Transport</option>
+                            <option value="Shopping">🛍 Shopping</option>
+                            <option value="Entertainment">🎬 Entertainment</option>
+                            <option value="Bills">📋 Bills</option>
+                            <option value="Healthcare">🏥 Healthcare</option>
+                            <option value="Education">📚 Education</option>
+                            <option value="Other">📦 Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="filterDateFrom">From Date</label>
+                        <input type="date" id="filterDateFrom" onchange="filterExpenses()">
+                    </div>
+                    <div class="form-group">
+                        <label for="filterDateTo">To Date</label>
+                        <input type="date" id="filterDateTo" onchange="filterExpenses()">
+                    </div>
+                    <div class="form-group search-bar">
+                        <label for="searchExpense">Search</label>
+                        <input type="text" id="searchExpense" placeholder="Search expenses..." oninput="filterExpenses()">
+                        <span class="search-icon">🔍</span>
+                    </div>
+                </div>
+                <div class="export-buttons">
+                    <button class="btn btn-secondary" onclick="exportToCSV()">📊 Export CSV</button>
+                    <button class="btn btn-secondary" onclick="exportToJSON()">📁 Export JSON</button>
+                    <button class="btn btn-secondary" onclick="clearAllData()">🗑 Clear All</button>
+                </div>
+            </div>
+
+            <div class="expense-list" id="expenseList">
+                <!-- Expense items will be populated by JavaScript -->
+            </div>
+        </div>
+
 </body>
 
 </html>
