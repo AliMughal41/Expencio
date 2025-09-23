@@ -150,3 +150,186 @@
         }
 
 
+
+        function drawCharts() {
+            drawPieChart();
+            drawBarChart();
+        }
+
+        function drawPieChart() {
+            const canvas = document.getElementById('pieChart');
+            const ctx = canvas.getContext('2d');
+            const categoryTotals = {};
+
+            expenses.forEach(expense => {
+                categoryTotals[expense.category] = (categoryTotals[expense.category] || 0) + expense.amount;
+            });
+
+            const categories = Object.keys(categoryTotals);
+            const amounts = Object.values(categoryTotals);
+            const total = amounts.reduce((sum, amount) => sum + amount, 0);
+
+            if (total === 0) {
+                ctx.fillStyle = '#888';
+                ctx.font = '16px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText('No data available', canvas.width / 2, canvas.height / 2);
+                return;
+            }
+
+            const colors = ['#00d4aa', '#00b894', '#008f7a', '#96ceb4', '#ffeaa7', '#dda0dd', '#98d8c8', '#f7dc6f'];
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const radius = Math.min(centerX, centerY) - 80;
+
+            let currentAngle = -Math.PI / 2;
+
+            // Clear canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            categories.forEach((category, index) => {
+                const sliceAngle = (amounts[index] / total) * 2 * Math.PI;
+                
+                // Draw slice
+                ctx.beginPath();
+                ctx.moveTo(centerX, centerY);
+                ctx.arc(centerX, centerY, radius, currentAngle, currentAngle + sliceAngle);
+                ctx.closePath();
+                ctx.fillStyle = colors[index % colors.length];
+                ctx.fill();
+                ctx.strokeStyle = '#1a1a1a';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+                // Draw labels on slices (only percentage)
+                if (sliceAngle > 0.1) { // Only show percentage if slice is large enough
+                    const labelAngle = currentAngle + sliceAngle / 2;
+                    const labelRadius = radius * 0.7;
+                    const labelX = centerX + Math.cos(labelAngle) * labelRadius;
+                    const labelY = centerY + Math.sin(labelAngle) * labelRadius;
+                    
+                    ctx.fillStyle = '#fff';
+                    ctx.font = 'bold 12px Arial';
+                    ctx.textAlign = 'center';
+                    ctx.strokeStyle = '#000';
+                    ctx.lineWidth = 3;
+                    
+                    const percentage = ((amounts[index] / total) * 100).toFixed(1);
+                    // Add text stroke for better visibility
+                    ctx.strokeText(`${percentage}%`, labelX, labelY);
+                    ctx.fillText(`${percentage}%`, labelX, labelY);
+                }
+
+                currentAngle += sliceAngle;
+            });
+
+            // Draw improved legend
+            const legendX = 20;
+            let legendY = 30;
+            
+            ctx.fillStyle = '#fff';
+            ctx.font = 'bold 14px Arial';
+            ctx.textAlign = 'left';
+            ctx.fillText('Categories:', legendX, legendY);
+            legendY += 25;
+
+            categories.forEach((category, index) => {
+                // Legend color box
+                ctx.fillStyle = colors[index % colors.length];
+                ctx.fillRect(legendX, legendY - 10, 15, 15);
+                
+                // Legend text
+                ctx.fillStyle = '#fff';
+                ctx.font = '12px Arial';
+                ctx.textAlign = 'left';
+                const legendText = `${category}: ${amounts[index].toFixed(2)}`;
+                ctx.fillText(legendText, legendX + 25, legendY + 2);
+                
+                legendY += 20;
+            });
+        }
+
+        function drawBarChart() {
+            const canvas = document.getElementById('barChart');
+            const ctx = canvas.getContext('2d');
+            const monthlyTotals = {};
+
+            // Group expenses by month
+            expenses.forEach(expense => {
+                const monthKey = expense.date.substring(0, 7); // YYYY-MM
+                monthlyTotals[monthKey] = (monthlyTotals[monthKey] || 0) + expense.amount;
+            });
+
+            const months = Object.keys(monthlyTotals).sort();
+            const amounts = months.map(month => monthlyTotals[month]);
+            const maxAmount = Math.max(...amounts, 0);
+
+            // Clear canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            if (months.length === 0) {
+                ctx.fillStyle = '#888';
+                ctx.font = '16px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText('No data available', canvas.width / 2, canvas.height / 2);
+                return;
+            }
+
+            const chartWidth = canvas.width - 80;
+            const chartHeight = canvas.height - 80;
+            const barWidth = chartWidth / months.length - 10;
+
+            // Draw bars
+            months.forEach((month, index) => {
+                const barHeight = (amounts[index] / maxAmount) * chartHeight;
+                const x = 60 + index * (barWidth + 10);
+                const y = canvas.height - 40 - barHeight;
+
+                // Bar
+                const gradient = ctx.createLinearGradient(0, y, 0, y + barHeight);
+                gradient.addColorStop(0, '#00d4aa');
+                gradient.addColorStop(1, '#00b894');
+                ctx.fillStyle = gradient;
+                ctx.fillRect(x, y, barWidth, barHeight);
+
+                // Border
+                ctx.strokeStyle = '#1a1a1a';
+                ctx.lineWidth = 1;
+                ctx.strokeRect(x, y, barWidth, barHeight);
+
+                // Month label
+                ctx.fillStyle = '#fff';
+                ctx.font = '10px Arial';
+                ctx.textAlign = 'center';
+                ctx.save();
+                ctx.translate(x + barWidth/2, canvas.height - 20);
+                ctx.rotate(-Math.PI/4);
+                ctx.fillText(month, 0, 0);
+                ctx.restore();
+
+                // Amount label
+                ctx.fillStyle = '#fff';
+                ctx.font = '12px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText(`${amounts[index].toFixed(0)}`, x + barWidth/2, y - 5);
+            });
+
+            // Draw axes
+            ctx.strokeStyle = '#666';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(50, 40);
+            ctx.lineTo(50, canvas.height - 40);
+            ctx.lineTo(canvas.width - 20, canvas.height - 40);
+            ctx.stroke();
+
+            // Y-axis labels
+            for (let i = 0; i <= 5; i++) {
+                const value = (maxAmount / 5) * i;
+                const y = canvas.height - 40 - (i * chartHeight / 5);
+                ctx.fillStyle = '#888';
+                ctx.font = '10px Arial';
+                ctx.textAlign = 'right';
+                ctx.fillText(`${value.toFixed(0)}`, 45, y + 3);
+            }
+        }
