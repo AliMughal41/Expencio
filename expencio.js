@@ -260,6 +260,8 @@ let expenses = JSON.parse(localStorage.getItem('expenses')) || [];
             });
 
             const totalAmount = expenses.reduce((sum, expense) => sum + expense.amount, 0);
+            console.log(totalAmount);
+            
             const averageExpense = totalAmount / (expenses.length || 1);
             const highestCategory = Object.keys(categoryTotals).reduce((a, b) => 
                 categoryTotals[a] > categoryTotals[b] ? a : b, '');
@@ -290,6 +292,8 @@ let expenses = JSON.parse(localStorage.getItem('expenses')) || [];
 
             categoryBreakdown.innerHTML = sortedCategories
                 .map(([category, amount]) => {
+                    console.log(amount,"  HELLO", totalAmount);
+                    
                     const percentage = ((amount / totalAmount) * 100).toFixed(1);
                     return `
                         <div style="display: flex; justify-content: space-between; align-items: center; 
