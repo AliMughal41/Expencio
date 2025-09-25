@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Expencio</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -156,6 +156,16 @@
             text-align: center;
             padding: 40px 20px;
         }
+        body.light .home-content h2 {
+            /* background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px; */
+            color: #222;
+        }
+
+        body.light .form-group label {
+            color: #222;
+        }
 
         .home-content h2 {
             font-size: 2.2rem;
@@ -209,7 +219,15 @@
             background: rgba(0, 212, 170, 0.1);
             border: 1px solid rgba(0, 212, 170, 0.3);
         }
+        body.light .expense-details div,
+        body.light .empty-state,
+        body.light .search-icon {
+            color: #222;
+        }
 
+        body.light .stat-value {
+            color: #00796b;
+        }
         .form-group {
             margin-bottom: 20px;
             margin-left: 20px;
